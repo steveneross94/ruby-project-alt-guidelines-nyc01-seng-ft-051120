@@ -57,6 +57,11 @@ require 'pry'
     end
 
     def delete_review(role)
+        puts "So, you've changed your mind. Which review would you like to delete?"
+        answer = gets.chomp.to_s
+        if answer
+        end
+        
         Review.find_by(role_id: role).delete
     end
 
