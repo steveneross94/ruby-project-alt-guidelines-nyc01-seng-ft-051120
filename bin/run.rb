@@ -1,5 +1,6 @@
 require_relative '../config/environment'
-# greet
+greet
 # reviews 
 # find_my_favorite
-leave_review
+# leave_review
+# delete_review

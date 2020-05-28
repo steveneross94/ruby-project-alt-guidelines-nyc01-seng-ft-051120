@@ -2,6 +2,14 @@ require 'pry'
 
 
     def greet
+        # puts "
+        # ____   ___  ____ _____  _    _     
+        # |  _ \ / _ \|  _ \_   _|/ \  | |    
+        # | |_) | | | | |_) || | / _ \ | |    
+        # |  __/| |_| |  _ < | |/ ___ \| |___ 
+        # |_|    \___/|_| \_\|_/_/   \_\_____|
+
+        # "
         puts "Thanks for signing up for 'PORTAL'!"
         puts "Welcome to your link to the world of Television."
         puts "With PORTAL you can look up reviews of shows or actors in the show, or you can leave a review about something you just watched."
@@ -43,26 +51,36 @@ require 'pry'
             system 'clear'
             puts "Which actor are you looking for?"
             actor = gets.chomp.to_s
-            fav_actor = Actor.find_by(name: actor)
-            show = Role.find_by(show_id: fav_actor.id)
-            binding.pry
+            fav_actor = Actor.find_by(name: actor).id
+            show = Role.find_by(show_id: fav_actor)
      
         elsif answer == "show"
             system 'clear'
             puts "What's your favorite show?"
             show = gets.chomp.to_s
-            fav_show = Show.find_by(name: show)
-            fav_show_role = Role.find_by(show_id: fav_show.id)
+            fav_show = Show.find_by(name: show).id
+            actor = Role.find_by(show_id: fav_show)
         end        
     end
 
-    def delete_review(role)
-        puts "So, you've changed your mind. Which review would you like to delete?"
-        answer = gets.chomp.to_s
-        if answer
+    def delete_review
+        puts "So, you've changed your mind. Which review would you like to delete? (actor/show)"
+        answer = gets.chomp.downcase
+        if answer == "actor"
+            puts "Which actor are you thinking of?"
+            actor_name = gets.chomp
+            actor = Actor.find_by(name: actor_name).id
+            role = Role.find_by(actor_id: actor).id
+            new_role = Review.find_by(role: role)
+            new_role.destroy
+        elsif answer == "show"
+            puts "Which show are you thinking of?"
+            show_name = gets.chomp
+            show = Show.find_by(name: show_name).id
+            role = Role.find_by(show_id: show).id
+            new_role = Review.find_by(role: role)
+            new_role.destroy
         end
-        
-        Review.find_by(role_id: role).delete
     end
 
     def leave_review
