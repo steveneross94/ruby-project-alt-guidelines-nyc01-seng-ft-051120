@@ -20,13 +20,12 @@ require 'tty-prompt'
     def home
         prompt = TTY::Prompt.new
         home_menu = prompt.select("What can I help you with today?", marker: "*") do |home|
-            home.choice "Find an Actor"
-            home.choice "Find a Show"
+            home.choice "Find an Actor or Show"
             home.choice "Leave a Review"
             home.choice "Delete a Review"
             home.choice "Find Something to Watch"
             end
-            if home_menu == "Find an Actor" || home_menu == "Find a Show"
+            if home_menu == "Find an Actor or Show"
                 system 'clear'
                 find_my_favorite
             elsif home_menu == "Leave a Review"
@@ -55,16 +54,16 @@ require 'tty-prompt'
             system 'clear'
             puts "Who is your favorite actor?"
             actor = gets.chomp
-            fav_actor = Actor.find_by(name: actor)
-            fav_actor_role = Role.find_by(actor_id: fav_actor.id)
+            fav_actor = Actor.find_by(name: actor).id
+            fav_actor_role = Role.find_by(actor_id: fav_actor)
             opinion = Review.find_by(role_id: fav_actor_role)
             puts opinion.review
         elsif answer == "show"
             system 'clear'
             puts "What's your favorite show?"
-            show = gets.chomp
-            fav_show = Show.find_by(name: show)
-            fav_show_role = Role.find_by(show_id: fav_show.id)
+            show = gets.chomp.to_s
+            fav_show = Show.find_by(name: show).id
+            fav_show_role = Role.find_by(show_id: fav_show)
             opinion = Review.find_by(role_id: fav_show_role)
             puts opinion.review
         end        
@@ -77,15 +76,18 @@ require 'tty-prompt'
             system 'clear'
             puts "Which actor are you looking for?"
             actor = gets.chomp.to_s
-            fav_actor = Actor.find_by(name: actor).id
-            show = Role.find_by(show_id: fav_actor)
-     
+            fav_actor = Actor.find_by(name: actor)
+            fav_actor.shows.each do |show|
+                puts show.name
+            end
         elsif answer == "show"
             system 'clear'
             puts "What's your favorite show?"
             show = gets.chomp.to_s
-            fav_show = Show.find_by(name: show).id
-            actor = Role.find_by(show_id: fav_show)
+            fav_show = Show.find_by(name: show)
+            fav_show.actors.each do |actor|
+                puts actor.name
+            end
         end        
     end
 
