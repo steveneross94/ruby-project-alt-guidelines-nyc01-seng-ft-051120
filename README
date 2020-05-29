@@ -3,3 +3,6 @@ Make sure you have everything installed by running 'bundle install'
 
 Ensure that the tables are set up by running db:migrate
 SOME data has been provided for you - you can access this data by running db:seed 
+
+The application is built in such a way that the commands to be run are limited to the data at hand.
+As such, the way to run this application is by running ruby 'bin/run.rb' in the terminal and selecting the option for what you'd like to do.
